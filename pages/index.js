@@ -1,32 +1,17 @@
-import Header from '../components/header'
-import Hero from '../components/hero'
-import Footer from '../components/footer'
+import Meta from 'components/meta'
+import Container from 'components/container'
+import Hero from 'components/hero'
 
 export default function Home() {
   return (
-    <>
-      <Header />
+    <Container>
+      <Meta />
 
-      <main>
-        <Hero />
-      </main>
-
-      <Footer />
-    </>
+      <Hero 
+        title="CUBE"
+        subtitle="アウトプットしていくサイト"
+        imageOn
+      />
+    </Container>
   )
 }
-
-// export default function Home() {
-//   return (
-//     <>
-//       <header>header</header>
-
-//       <main>
-//         <h1>CUBE</h1>
-//         <p>aaaaaaaaaaa</p>
-//       </main>
-
-//       <footer>FOOTER</footer>
-//     </>
-//   )
-// }
