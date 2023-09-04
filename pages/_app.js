@@ -6,10 +6,10 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 import {config} from '@fortawesome/fontawesome-svg-core'
 config.autoAddCss = false
 
-function MyApp({ Component, PageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
     <Layout>
-      <Component {...PageProps} />
+      <Component {...pageProps} />
     </Layout>
   )
 }
