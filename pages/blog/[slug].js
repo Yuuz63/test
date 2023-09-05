@@ -1,9 +1,12 @@
-import { getPostBySlug } from 'lib/api'
+import { getPostBySlug, getAllSlugs } from 'lib/api'
 import { extractText } from 'lib/extract-text'
 import Meta from 'components/meta'
 import Container from 'components/container'
 import PostHeader from 'components/post-header'
 import Image from 'next/legacy/image'
+// 画像読み込みのためのバッファー処理
+import { getImageBuffer } from 'lib/getImageBuffer'
+
 import { getPlaiceholder } from 'plaiceholder'
 // ローカルの代替アイキャッチ画像
 import { eyecatchLocal } from 'lib/constant'
@@ -13,7 +16,7 @@ import { TwoColumn,TwoColumnMain, TwoColumnSidebar } from 'components/two-column
 import ConvertBody from 'components/convert-body'
 import PostCategories from 'components/post-categories'
 
-export default function Schedule({
+export default function Post({
     title,
     publish,
     content,
@@ -61,12 +64,24 @@ export default function Schedule({
     )
 }
 
-export async function getStaticProps() {
-    const slug = 'micro'
+export async function getStaticPaths() {
+    const allSlugs = await getAllSlugs()
+    
+    return (
+        {
+            paths: allSlugs.map(({ slug }) => `/blog/${slug}`),
+            fallback: false,
+        }
+    )
+}
+
+export async function getStaticProps( context ) {
+    const slug = context.params.slug
     const post = await getPostBySlug(slug)
     const description = extractText(post.content)
     const eyecatch = post.eyecatch || eyecatchLocal
-    const { base64 } = await getPlaiceholder(eyecatch.url)
+    const imageBuffer = await getImageBuffer(eyecatch.url)
+    const { base64 } = await getPlaiceholder(imageBuffer)
     eyecatch.blurDataURL = base64
 
     return {
